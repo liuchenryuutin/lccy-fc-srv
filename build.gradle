@@ -1,0 +1,57 @@
+buildscript {
+    ext {
+        springBootVersion = '2.1.1.RELEASE'
+    }
+    buildscript {
+        repositories {
+            maven { name "Alibaba" ; url 'https://maven.aliyun.com/repository/public' }
+            maven { name "Bstek" ; url 'http://nexus.bsdn.org/content/groups/public/' }
+            maven { name "M2" ; url 'https://plugins.gradle.org/m2/' }
+        }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile (group:'org.springframework.boot',name:'spring-boot-starter-log4j2',version: '2.1.7.RELEASE')
+
+    compile(group:'org.springframework.boot',name:'spring-boot-starter-aop',version: '2.1.7.RELEASE'){
+        exclude(group: 'org.springframework.boot',module:'spring-boot-starter-logging')
+        exclude group: 'ch.qos.logback', module: 'logback-core'
+    }
+
+    compile(group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.1.7.RELEASE') {
+        exclude(module: 'spring-boot-starter-tomcat')
+        exclude(group: 'org.apache.tomcat.embed')
+        exclude(group: 'org.springframework.boot',module:'spring-boot-starter-logging')
+        exclude group: 'ch.qos.logback', module: 'logback-core'
+    }
+
+    compile(group: 'org.springframework.boot', name: 'spring-boot-starter-tomcat', version: '2.1.7.RELEASE'){
+        exclude(group: 'org.springframework.boot',module:'spring-boot-starter-logging')
+        exclude group: 'ch.qos.logback', module: 'logback-core'
+    }
+
+    testImplementation(group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.1.7.RELEASE'){
+        exclude(group: 'org.springframework.boot',module:'spring-boot-starter-logging')
+        exclude group: 'ch.qos.logback', module: 'logback-core'
+    }
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
